@@ -39,7 +39,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
         aspectRatio: 3 / 2,
         autoPlay: true,
         looping: true,
-        allowSeekTo: false,
+        allowSeekTo: true,
         overlay: Container(
           child: AppBar(
             backgroundColor: Colors.transparent,

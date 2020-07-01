@@ -8,6 +8,7 @@ class MaterialVideoProgressBar extends StatefulWidget {
     this.controller, {
     ChewieProgressColors colors,
     this.allowSeekTo = true,
+    this.allowForwardSeeking = false,
     this.onDragEnd,
     this.onDragStart,
     this.onDragUpdate,
@@ -16,6 +17,7 @@ class MaterialVideoProgressBar extends StatefulWidget {
   final VideoPlayerController controller;
   final ChewieProgressColors colors;
   final bool allowSeekTo;
+  final bool allowForwardSeeking;
   final Function() onDragStart;
   final Function() onDragEnd;
   final Function() onDragUpdate;
@@ -57,7 +59,13 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
       final Offset tapPos = box.globalToLocal(globalPosition);
       final double relative = tapPos.dx / box.size.width;
       final Duration position = controller.value.duration * relative;
-      controller.seekTo(position);
+      if (widget.allowForwardSeeking) {
+        controller.seekTo(position);
+      } else {
+        if (position < controller.value.position) {
+          controller.seekTo(position);
+        }
+      }
     }
 
     return GestureDetector(
@@ -75,7 +83,7 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
         ),
       ),
       onHorizontalDragStart: (DragStartDetails details) {
-        if(widget.allowSeekTo){
+        if (widget.allowSeekTo) {
           if (!controller.value.initialized) {
             return;
           }
@@ -90,7 +98,7 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
         }
       },
       onHorizontalDragUpdate: (DragUpdateDetails details) {
-        if(widget.allowSeekTo){
+        if (widget.allowSeekTo) {
           if (!controller.value.initialized) {
             return;
           }
@@ -102,7 +110,7 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
         }
       },
       onHorizontalDragEnd: (DragEndDetails details) {
-        if(widget.allowSeekTo){
+        if (widget.allowSeekTo) {
           if (_controllerWasPlaying) {
             controller.play();
           }
@@ -113,7 +121,7 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
         }
       },
       onTapDown: (TapDownDetails details) {
-        if(widget.allowSeekTo){
+        if (widget.allowSeekTo) {
           if (!controller.value.initialized) {
             return;
           }

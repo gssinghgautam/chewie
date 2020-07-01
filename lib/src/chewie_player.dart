@@ -185,6 +185,7 @@ class ChewieController extends ChangeNotifier {
     this.allowFullScreen = true,
     this.allowMuting = true,
     this.allowSeekTo = true,
+    this.allowForwardSeeking = false,
     this.iconColor = Colors.white,
     this.timerColor = Colors.white,
     this.platform = TargetPlatform.android,
@@ -268,6 +269,9 @@ class ChewieController extends ChangeNotifier {
 
   /// Defines if force seekTo should be allowed
   final bool allowSeekTo;
+
+  ///Defines if forward seeking is allowed
+  final bool allowForwardSeeking;
 
   final Color iconColor;
 

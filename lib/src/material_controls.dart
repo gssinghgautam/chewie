@@ -398,24 +398,21 @@ class _MaterialControlsState extends State<MaterialControls> {
         child: MaterialVideoProgressBar(
           controller,
           allowSeekTo: chewieController.allowSeekTo,
-          onDragStart: chewieController.allowSeekTo
-              ? () {
-                  setState(() {
-                    _dragging = true;
-                  });
+          allowForwardSeeking: chewieController.allowForwardSeeking,
+          onDragStart: () {
+            setState(() {
+              _dragging = true;
+            });
 
-                  _hideTimer?.cancel();
-                }
-              : null,
-          onDragEnd: chewieController.allowSeekTo
-              ? () {
-                  setState(() {
-                    _dragging = false;
-                  });
+            _hideTimer?.cancel();
+          },
+          onDragEnd: () {
+            setState(() {
+              _dragging = false;
+            });
 
-                  _startHideTimer();
-                }
-              : null,
+            _startHideTimer();
+          },
           colors: chewieController.materialProgressColors ??
               ChewieProgressColors(
                   playedColor: Theme.of(context).accentColor,
