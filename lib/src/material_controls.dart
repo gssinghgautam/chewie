@@ -57,20 +57,31 @@ class _MaterialControlsState extends State<MaterialControls> {
         onTap: () => _cancelAndRestartTimer(),
         child: AbsorbPointer(
           absorbing: _hideStuff,
-          child: Column(
+          child: Stack(
             children: <Widget>[
-              _buildAppBar(context),
-              _latestValue != null &&
-                          !_latestValue.isPlaying &&
-                          _latestValue.duration == null ||
-                      _latestValue.isBuffering
-                  ? const Expanded(
-                      child: const Center(
-                        child: const CircularProgressIndicator(),
-                      ),
-                    )
-                  : _buildHitArea(),
-              _buildBottomBar(context),
+              AnimatedOpacity(
+                opacity: _hideStuff ? 0.0 : 1.0,
+                duration: Duration(milliseconds: 300),
+                child: Container(
+                  decoration: BoxDecoration(color: Colors.black54),
+                ),
+              ),
+              Column(
+                children: <Widget>[
+                  _buildAppBar(context),
+                  _latestValue != null &&
+                              !_latestValue.isPlaying &&
+                              _latestValue.duration == null ||
+                          _latestValue.isBuffering
+                      ? const Expanded(
+                          child: const Center(
+                            child: const CircularProgressIndicator(),
+                          ),
+                        )
+                      : _buildHitArea(),
+                  _buildBottomBar(context),
+                ],
+              ),
             ],
           ),
         ),
@@ -115,7 +126,7 @@ class _MaterialControlsState extends State<MaterialControls> {
       duration: Duration(milliseconds: 300),
       child: Container(
         height: barHeight,
-        color: Theme.of(context).dialogBackgroundColor,
+        color: Colors.transparent,
         child: Row(
           children: <Widget>[
             _buildPlayPause(controller),
@@ -161,6 +172,7 @@ class _MaterialControlsState extends State<MaterialControls> {
               chewieController.isFullScreen
                   ? Icons.fullscreen_exit
                   : Icons.fullscreen,
+              color: Colors.white,
             ),
           ),
         ),
@@ -187,7 +199,6 @@ class _MaterialControlsState extends State<MaterialControls> {
           }
         },
         child: Container(
-          color: Colors.transparent,
           child: Center(
             child: AnimatedOpacity(
               opacity:
@@ -203,7 +214,10 @@ class _MaterialControlsState extends State<MaterialControls> {
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(12.0),
-                    child: Icon(Icons.play_arrow, size: 32.0),
+                    child: Icon(
+                      Icons.play_arrow,
+                      size: 32.0,
+                    ),
                   ),
                 ),
               ),
@@ -243,6 +257,7 @@ class _MaterialControlsState extends State<MaterialControls> {
                 (_latestValue != null && _latestValue.volume > 0)
                     ? Icons.volume_up
                     : Icons.volume_off,
+                color: Colors.white,
               ),
             ),
           ),
@@ -264,6 +279,7 @@ class _MaterialControlsState extends State<MaterialControls> {
         ),
         child: Icon(
           controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+          color: Colors.white,
         ),
       ),
     );
