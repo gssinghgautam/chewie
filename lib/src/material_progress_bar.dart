@@ -7,6 +7,7 @@ class MaterialVideoProgressBar extends StatefulWidget {
   MaterialVideoProgressBar(
     this.controller, {
     ChewieProgressColors colors,
+    this.allowSeekTo = true,
     this.onDragEnd,
     this.onDragStart,
     this.onDragUpdate,
@@ -14,6 +15,7 @@ class MaterialVideoProgressBar extends StatefulWidget {
 
   final VideoPlayerController controller;
   final ChewieProgressColors colors;
+  final bool allowSeekTo;
   final Function() onDragStart;
   final Function() onDragEnd;
   final Function() onDragUpdate;
@@ -73,42 +75,50 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
         ),
       ),
       onHorizontalDragStart: (DragStartDetails details) {
-        if (!controller.value.initialized) {
-          return;
-        }
-        _controllerWasPlaying = controller.value.isPlaying;
-        if (_controllerWasPlaying) {
-          controller.pause();
-        }
+        if(widget.allowSeekTo){
+          if (!controller.value.initialized) {
+            return;
+          }
+          _controllerWasPlaying = controller.value.isPlaying;
+          if (_controllerWasPlaying) {
+            controller.pause();
+          }
 
-        if (widget.onDragStart != null) {
-          widget.onDragStart();
+          if (widget.onDragStart != null) {
+            widget.onDragStart();
+          }
         }
       },
       onHorizontalDragUpdate: (DragUpdateDetails details) {
-        if (!controller.value.initialized) {
-          return;
-        }
-        seekToRelativePosition(details.globalPosition);
+        if(widget.allowSeekTo){
+          if (!controller.value.initialized) {
+            return;
+          }
+          seekToRelativePosition(details.globalPosition);
 
-        if (widget.onDragUpdate != null) {
-          widget.onDragUpdate();
+          if (widget.onDragUpdate != null) {
+            widget.onDragUpdate();
+          }
         }
       },
       onHorizontalDragEnd: (DragEndDetails details) {
-        if (_controllerWasPlaying) {
-          controller.play();
-        }
+        if(widget.allowSeekTo){
+          if (_controllerWasPlaying) {
+            controller.play();
+          }
 
-        if (widget.onDragEnd != null) {
-          widget.onDragEnd();
+          if (widget.onDragEnd != null) {
+            widget.onDragEnd();
+          }
         }
       },
       onTapDown: (TapDownDetails details) {
-        if (!controller.value.initialized) {
-          return;
+        if(widget.allowSeekTo){
+          if (!controller.value.initialized) {
+            return;
+          }
+          seekToRelativePosition(details.globalPosition);
         }
-        seekToRelativePosition(details.globalPosition);
       },
     );
   }

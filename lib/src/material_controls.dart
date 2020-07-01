@@ -59,6 +59,7 @@ class _MaterialControlsState extends State<MaterialControls> {
           absorbing: _hideStuff,
           child: Column(
             children: <Widget>[
+              _buildAppBar(context),
               _latestValue != null &&
                           !_latestValue.isPlaying &&
                           _latestValue.duration == null ||
@@ -134,6 +135,14 @@ class _MaterialControlsState extends State<MaterialControls> {
     );
   }
 
+  AnimatedOpacity _buildAppBar(BuildContext context) {
+    return AnimatedOpacity(
+      opacity: _hideStuff ? 0.0 : 1.0,
+      duration: Duration(milliseconds: 300),
+      child: chewieController.overlay ?? Container(),
+    );
+  }
+
   GestureDetector _buildExpandButton() {
     return GestureDetector(
       onTap: _onExpandCollapse,
@@ -172,7 +181,6 @@ class _MaterialControlsState extends State<MaterialControls> {
               _cancelAndRestartTimer();
           } else {
             _playPause();
-
             setState(() {
               _hideStuff = true;
             });
@@ -324,12 +332,9 @@ class _MaterialControlsState extends State<MaterialControls> {
 
   void _playPause() {
     bool isFinished;
-    if( _latestValue.duration != null)
-    {
+    if (_latestValue.duration != null) {
       isFinished = _latestValue.position >= _latestValue.duration;
-    }
-    else
-    {
+    } else {
       isFinished = false;
     }
 
@@ -375,20 +380,25 @@ class _MaterialControlsState extends State<MaterialControls> {
         padding: EdgeInsets.only(right: 20.0),
         child: MaterialVideoProgressBar(
           controller,
-          onDragStart: () {
-            setState(() {
-              _dragging = true;
-            });
+          allowSeekTo: chewieController.allowSeekTo,
+          onDragStart: chewieController.allowSeekTo
+              ? () {
+                  setState(() {
+                    _dragging = true;
+                  });
 
-            _hideTimer?.cancel();
-          },
-          onDragEnd: () {
-            setState(() {
-              _dragging = false;
-            });
+                  _hideTimer?.cancel();
+                }
+              : null,
+          onDragEnd: chewieController.allowSeekTo
+              ? () {
+                  setState(() {
+                    _dragging = false;
+                  });
 
-            _startHideTimer();
-          },
+                  _startHideTimer();
+                }
+              : null,
           colors: chewieController.materialProgressColors ??
               ChewieProgressColors(
                   playedColor: Theme.of(context).accentColor,

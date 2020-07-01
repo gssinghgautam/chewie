@@ -35,24 +35,33 @@ class _ChewieDemoState extends State<ChewieDemo> {
     _videoPlayerController2 = VideoPlayerController.network(
         'https://www.sample-videos.com/video123/mp4/480/asdasdas.mp4');
     _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController1,
-      aspectRatio: 3 / 2,
-      autoPlay: true,
-      looping: true,
-      // Try playing around with some of these other options:
+        videoPlayerController: _videoPlayerController1,
+        aspectRatio: 3 / 2,
+        autoPlay: true,
+        looping: true,
+        allowSeekTo: false,
+        overlay: Container(
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            leading: IconButton(icon: Icon(Icons.arrow_back, color: Colors.black,), onPressed: (){}),
+          ),
+          height: kToolbarHeight,
+        )
+        // Try playing around with some of these other options:
 
-      // showControls: false,
-      // materialProgressColors: ChewieProgressColors(
-      //   playedColor: Colors.red,
-      //   handleColor: Colors.blue,
-      //   backgroundColor: Colors.grey,
-      //   bufferedColor: Colors.lightGreen,
-      // ),
-      // placeholder: Container(
-      //   color: Colors.grey,
-      // ),
-      // autoInitialize: true,
-    );
+        // showControls: false,
+        // materialProgressColors: ChewieProgressColors(
+        //   playedColor: Colors.red,
+        //   handleColor: Colors.blue,
+        //   backgroundColor: Colors.grey,
+        //   bufferedColor: Colors.lightGreen,
+        // ),
+        // placeholder: Container(
+        //   color: Colors.grey,
+        // ),
+        // autoInitialize: true,
+        );
   }
 
   @override

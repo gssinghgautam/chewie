@@ -9,7 +9,7 @@ import 'package:video_player/video_player.dart';
 
 class PlayerWithControls extends StatelessWidget {
   PlayerWithControls({Key key}) : super(key: key);
-
+  bool _isOverlay = false;
   @override
   Widget build(BuildContext context) {
     final ChewieController chewieController = ChewieController.of(context);
@@ -39,7 +39,6 @@ class PlayerWithControls extends StatelessWidget {
               child: VideoPlayer(chewieController.videoPlayerController),
             ),
           ),
-          chewieController.overlay ?? Container(),
           _buildControls(context, chewieController),
         ],
       ),
