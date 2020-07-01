@@ -185,6 +185,9 @@ class ChewieController extends ChangeNotifier {
     this.allowFullScreen = true,
     this.allowMuting = true,
     this.allowSeekTo = true,
+    this.iconColor = Colors.white,
+    this.timerColor = Colors.white,
+    this.platform = TargetPlatform.android,
     this.systemOverlaysAfterFullScreen = SystemUiOverlay.values,
     this.deviceOrientationsAfterFullScreen = const [
       DeviceOrientation.portraitUp,
@@ -265,6 +268,12 @@ class ChewieController extends ChangeNotifier {
 
   /// Defines if force seekTo should be allowed
   final bool allowSeekTo;
+
+  final Color iconColor;
+
+  final Color timerColor;
+
+  final TargetPlatform platform;
 
   /// Defines the system overlays visible after exiting fullscreen
   final List<SystemUiOverlay> systemOverlaysAfterFullScreen;
